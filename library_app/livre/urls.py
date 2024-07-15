@@ -11,7 +11,6 @@ urlpatterns=[
     path('livre/<int:livre_id>/', pagelivre, name='pagelivre'),
     path('search/', book_search, name='book_search'), 
     path('update_user/', update_user, name='update_user'),
-    path('dashboard/', dashboard_page, name='dashboard'),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
