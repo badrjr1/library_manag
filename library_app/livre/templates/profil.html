@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Profile{% endblock %}
+
+{% block content%}
+{% if messages %}
+<div class="container">
+    {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+    {% endfor %}
+</div>
+{% endif %}
+     <div class="container">
+         <h2>User Profile</h2>
+<div class="profile-info">
+    <p><strong>Username:</strong> {{ user.username }}</p>
+    <p><strong>Email:</strong> {{ user.email }}</p>
+    <p><strong>First Name:</strong> {{ user.first_name }}</p>
+    <p><strong>Last Name:</strong> {{ user.last_name }}</p>
+    <a href="#" id="edit-button">Edit</a>
+</div>
+
+<div id="edit-form" style="display: none;">
+    <form id="profile-form" method="POST" action="{% url 'update_user' %}">
+        {% csrf_token %}
+        <label for="id_username">Username:</label>
+        <input type="text" id="id_username" name="username" value="{{ user.username }}"><br>
+
+        <label for="id_email">Email:</label>
+        <input type="email" id="id_email" name="email" value="{{ user.email }}"><br>
+
+        <label for="id_first_name">First Name:</label>
+        <input type="text" id="id_first_name" name="first_name" value="{{ user.first_name }}"><br>
+
+        <label for="id_last_name">Last Name:</label>
+        <input type="text" id="id_last_name" name="last_name" value="{{ user.last_name }}"><br>
+<br>
+        <button type="submit" style="margin-left: 3px;">Save</button>
+        <button type="button" id="cancel-button" style="margin-left: 9px;">Cancel</button>
+    </form>
+</div>
+<br>
+         
+         <h3>Loans</h3>
+         <table class="table">
+             <thead>
+                 <tr>
+                     <th>Book</th>
+                     <th>Due Date</th>
+                     <th>Return Date</th>
+                     <th>Returned</th>
+                 </tr>
+             </thead>
+             <tbody>
+                 {% for loan in loans %}
+                 <tr>
+                     <td>{{ loan.book.title }}</td>
+                     <td>{{ loan.due_date }}</td>
+                     <td>{{ loan.return_date }}</td>
+                     <td>{{ loan.returned }}</td>
+                 </tr>
+                 {% endfor %}
+             </tbody>
+         </table>
+ 
+         <h3>Penalties</h3>
+         <table class="table">
+             <thead>
+                 <tr>
+                     <th>Loan</th>
+                     <th>Reason</th>
+                 </tr>
+             </thead>
+             <tbody>
+                 {% for penalty in penalties %}
+                 <tr>
+                     <td>{{ penalty.loan.book.title }}</td>
+                     <td>{{ penalty.reason }}</td>
+                 </tr>
+                 {% endfor %}
+             </tbody>
+         </table>
+     </div>
+     <script>
+        document.getElementById('edit-button').addEventListener('click', function(event) {
+            event.preventDefault();
+            document.querySelector('.profile-info').style.display = 'none';
+            document.getElementById('edit-form').style.display = 'block';
+        });
+    
+        document.getElementById('cancel-button').addEventListener('click', function() {
+            document.getElementById('edit-form').style.display = 'none';
+            document.querySelector('.profile-info').style.display = 'block';
+        });
+    </script>
+    <style>
+        .form-container {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 300px;
+}
+
+.edit-form {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+input[type="text"],
+input[type="email"] {
+    width: calc(100% - 12px);
+    padding: 6px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+button {
+    background-color: #2e5074;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 16px;
+    float: right;
+}
+
+button:hover {
+    background-color: #1c232b;
+}
+    </style>
+{% endblock %}

@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}le livre {{livre.title}}{% endblock %}
+{% block content %}
+<div class="container">
+  {% if messages %}
+<div class="container">
+    {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+    {% endfor %}
+</div>
+{% endif %}
+    <div class="row">
+        <div class="col-md-12">
+          <div class="row">
+           <div class="col-8">
+              <div class="row">
+                  <div class="col">
+                    <div class="card " id="image" style="height: max-content;  display: inline-block;">
+                      <a class="mt-2 ">
+                        <img src="{{ livre.image.url }}" class="card-img-top" alt="...">
+                      </a> 
+                    </div>
+                  </div> 
+              
+                  <div class="col">
+                    <div class="card" style="height:max-content;  display: inline-block;">
+                        <div class="card-body">
+                            <h2>{{livre.title}} <br><small><span> Auteur: {{livre.auteur}}</span></small><br>
+                              <small><span>Genre: {{livre.genre}} </span></small><br>
+                              <br>
+                            </h2>
+                            <span>{{livre.resume}}</span>
+                            {% if user.is_authenticated %}  
+                              <div >
+                                <button ><a href="{% url 'home' %}">Cancel</a></button>
+                                <form method="post">
+                                  {% csrf_token %}
+                                  <button type="submit">Emprunter</button>
+                                </form>
+                              </div>
+                            <br><br> 
+                          {% endif %}
+                        </div>
+                      </div>
+                  </div>
+              </div>
+           </div>
+            
+            
+            <div class="col-3">
+              <h4>Suggestion: </h4>
+              <div class="card" >
+                <div style="overflow-y: scroll;overflow-x: hidden;height: 90vh;">
+                  {% for book in random_books %}
+                  <div class="row mb-3" >
+                    <a href="{% url 'pagelivre' book.id %}" >
+                      <div class="card" >
+                        <a href="{% url 'pagelivre' book.id %}" >
+                          <img src="{{ book.image.url }}" class="card-img-top">
+                        </a>
+                        <div class="card-body">
+                          <a >
+                            <h5 class="card-title">{{book.title}}</h5>
+                          </a>
+                        </div>
+                      </div>
+                    </a>
+                  </div>
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+                
+    </div>
+</div>
+<style>
+  a{
+    color: rgb(255, 255, 255);
+  }
+  button
+  {
+      background: #000;
+      color: #fffffff5;
+      border: none;
+      outline: none;
+      padding: 15px 20px;
+      margin-top: 5px;
+      margin-right: 6px;
+      font-size: 16px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      font-weight: 600;
+      border-radius: 40px;
+      float: right;
+  }
+  h2{
+      margin: 0;
+      padding: 0;
+      font-size: 2.4em;
+      line-height: 1em;
+      color: #444;
+  }
+  h2 span{
+      font-size: 0.4em;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: #999;
+  }
+  .card{
+    display: inline-block;
+  }
+  #image{
+    position: right;
+  }
+  </style>
+{% endblock %}

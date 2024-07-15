@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}HOME{% endblock %}
+
+{% block content%}
+
+<form action="{% url 'book_search' %}" method="get" class="mb-3" >
+  {% csrf_token %}
+  <div class="input-group rounded w-50 col-6 mx-auto" >
+    <input type="search" name="title" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
+    <span class="input-group-text border-0" id="search-addon">
+      <i class="fas fa-search"></i>
+    </span>
+  </div>
+</form>
+{% if messages %}
+<div class="container">
+    {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+    {% endfor %}
+</div>
+{% endif %}
+<div class="row row-cols-1 row-cols-md-5 g-4">
+{% for book in liste_book%}
+
+  <div class="card" >
+    <a href="{% url 'pagelivre' book.id %}" >
+      <img src="{{ book.image.url }}" class="card-img-top" alt="...">
+    </a>
+    <div class="card-body">
+      <a href="{% url 'pagelivre' book.id %}" >
+        <h5 class="card-title">{{book.title}}</h5>
+      </a>
+      <p ><small class="text-body-secondary">Auteur : </small>  {{ book.auteur}}</p>
+      <p class="card-text"><small class="text-body-secondary">Genre : </small>  {{ book.genre}}</p>
+      <p class="card-text"><small class="text-body-secondary">Language : </small>  {{ book.language}}</p>
+      
+    </div>
+  </div>
+{% endfor %}
+</div>
+{% endblock %}
