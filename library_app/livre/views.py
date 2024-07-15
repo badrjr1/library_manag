@@ -38,7 +38,6 @@ def logIn(request):
                return redirect('home')
            else:
                messages.warning(request,'Mot de passe ou nom d\'utilisateur incorrect')
-       #ctx = {'active_link':'login'}
        return render(request, 'login.html')
 
 def logOut(request):
@@ -92,14 +91,8 @@ def book_search(request):
         if not liste_book :
             messages.warning(request,'livre n\'existe pas')
     else:
-        #messages.warning(request,'livre n''existe pas')
         liste_book=Books.objects.all()
     return render(request, 'home.html', {'query': query, 'liste_book': liste_book})
-
-def dashboard_page(request):
-    random_books=Books.objects.order_by('?')[:4]
-    popular_book=Books.objects.annotate(num_loans=Count('title')).order_by('-num_loans')[:4]
-    return render(request,'dashboard.html',{'randbook':random_books , 'popular':popular_book})
 
 @login_required
 def update_user(request):
